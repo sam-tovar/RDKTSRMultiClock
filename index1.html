@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<meta charset="utf-8">
+<head>
+<title>Clock</title>
+<style>
+body
+{
+margin: 0;
+padding: 0;
+background-color: black;
+}
+#date
+{
+width: 100%;
+top: 47%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+z-index: 1;
+position: absolute;
+font-size: calc(100vmin / 23);
+color: #00FFFF;
+}
+
+#time
+{
+width: 100%;
+top: 56%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+z-index: 1;
+position: absolute;
+font-size: calc(100vmin / 8);
+color: #00FFFF;
+}
+#dtime
+{
+width: 100%;
+top: 42%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+z-index: 1;
+position: absolute;
+font-size: calc(100vmin / 15);
+color: #00FFFF;
+}
+#qtime
+{
+width: 100%;
+top: 36%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+z-index: 1;
+position: absolute;
+font-size: calc(100vmin / 15);
+color: #00FFFF;
+}
+#utctime
+{
+width: 100%;
+top: 63%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+z-index: 1;
+position: absolute;
+font-size: calc(100vmin / 22);
+color: #00FFFF;
+}
+
+
+</style>
+</head>
+<body>
+<FONT FACE="Arial"><B>
+<div id="date"></div>
+<div id="time"></div>
+<div id="dtime"></div>
+<div id="qtime"></div>
+<div id="utctime"></div>
+</B></FONT>
+<script>
+
+	window.addEventListener("load", init); 
+	
+	face = new Image()
+	hand1 = new Image()
+	hand2 = new Image()
+	hand3 = new Image()
+	hand4 = new Image()
+	hand5 = new Image()
+	TO_RADIANS = Math.PI/180; 
+	face.src = 'face.png';
+	hand1.src = 'hand1.png';
+	hand2.src = 'hand2.png';
+	hand3.src = 'hand3.png';
+	hand4.src = 'hand4.png';
+	hand5.src = 'hand5.png';
+	var canvas = document.createElement('canvas'); 
+	var context = canvas.getContext('2d'); 
+	document.body.appendChild(canvas); 
+
+	function init(){
+		setInterval(loop, 80); 
+	}
+	function checkTime(i) {
+    if (i < 10) {i = "0" + i}; 
+    return i;}
+
+	function loop() {
+		canvas.width = window.innerWidth-5;
+		canvas.height = window.innerHeight-5;
+		
+		var now = new Date().getTime()/86400000 % 1;
+		var nowlocal = (new Date().getTime()-(new Date().getTimezoneOffset()*60000))/86400000 % 1;
+		var hoursut = now*24;
+		var hoursanalog = nowlocal*24;
+		var minutesanalog = (hoursanalog%1)*60;
+		var dtime1 = Math.floor(now*1000) % 100 * 3.6;
+		var dtime2 = Math.floor(now*10000) % 100 * 3.6;
+		var dtime3 = Math.floor(now*4000) % 100 * 3.6;
+		
+		var dtimea = checkTime(Math.floor(now*100));
+		var dtimeb = Math.floor(now*1000)%10;
+		var dtimec = checkTime(Math.floor(now*100000)%100);
+		
+		var qtimea = checkTime(Math.floor(now*40));
+		var qtimeb = checkTime(Math.floor(now*4000)%100);
+		var qtimec = checkTime(Math.floor(now*400000)%100);
+		
+		var y = new Date().getFullYear();
+		var n = checkTime(new Date().getMonth());
+		var d = checkTime(new Date().getDate());
+		var wk = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+		var w = wk[new Date().getDay()];
+		var h = checkTime(new Date().getHours());
+		var m = checkTime(new Date().getMinutes());
+		var s = checkTime(new Date().getSeconds());
+		
+		var ud = checkTime(new Date().getUTCDate());
+		var uw = wk[new Date().getUTCDay()];
+		
+		var uh = checkTime(new Date().getUTCHours());
+		var um = checkTime(new Date().getUTCMinutes());
+		var us = checkTime(new Date().getUTCSeconds());
+		
+		document.getElementById('date').innerHTML = y+"."+n+"."+d+"-"+w;
+		document.getElementById('time').innerHTML = h + ":" + m + "<FONT SIZE=5>:" + s +"</FONT>";
+		document.getElementById('utctime').innerHTML = "<FONT SIZE=4>"+ud+"-"+uw+"</FONT>"+uh + ":" + um + "<FONT SIZE=5>:" + us +" UTC</FONT>";
+		document.getElementById('dtime').innerHTML = dtimea + "." + dtimeb + "<FONT SIZE=5>" + dtimec +" EMT</FONT>";
+		document.getElementById('qtime').innerHTML = qtimea + "." + qtimeb + "'<FONT SIZE=5>" + qtimec +'" WCT</FONT>';
+
+		context.clearRect(0,0,canvas.width, canvas.height);
+		drawRotatedImage(face,0,1);
+		drawRotatedImage(hand1,Math.floor(minutesanalog)*6,1);
+		drawRotatedImage(hand1,hoursanalog*15,0.85);
+		drawRotatedImage(hand5,dtime3,0.75);
+		drawRotatedImage(hand4,dtime1,0.75);
+		drawRotatedImage(hand3,dtime2,0.75);
+		drawRotatedImage(hand2,hoursut*15,0.92);
+	
+	}
+	
+	
+	function drawRotatedImage(image,angle,scale) { 
+		context.save(); 
+		var factor = (canvas.height > canvas.width) ? canvas.width : canvas.height;
+		context.translate(canvas.width/2, canvas.height/2);
+		context.rotate(angle * TO_RADIANS);
+		context.drawImage(image, -((factor*scale)/2), -((factor*scale)/2),factor*scale,factor*scale);
+		context.restore(); 
+	}
+	
+
+	</script>
+</body>
+</html>
