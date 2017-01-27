@@ -13,12 +13,12 @@ background-color: black;
 <body>
 <FONT FACE="Arial" COLOR="#00CCFF"><B>
 <CENTER>
-<div id="date" style="position:absolute; top:360; left:0; width:1000; z-index:10; padding:0px; font-size:60; "></div>
-<div id="time" style="position:absolute; top:385; left:0; width:1000; z-index:10; padding:0px; font-size:200; "></div>
-<div id="utctime" style="position:absolute; top:600; left:0; width:1000; z-index:10; padding:0px; font-size:80; "></div>
-<div id="emtt" style="position:absolute; top:220; left:0; width:1000; z-index:10; padding:0px; font-size:100;"></div>
-<div id="emts1" style="position:absolute; top:50; left:0; width:1000; z-index:10; padding:0px; font-size:23;"></div>
-<div id="emts2" style="position:absolute; top:850; left:0; width:1000; z-index:10; padding:0px; font-size:23;"></div>
+<div id="date" style="position:absolute; top:180; left:0; width:500; z-index:10; padding:0px; font-size:30; "></div>
+<div id="time" style="position:absolute; top:192; left:0; width:500; z-index:10; padding:0px; font-size:100; "></div>
+<div id="utctime" style="position:absolute; top:325; left:0; width:500; z-index:10; padding:0px; font-size:40; "></div>
+<div id="emtt" style="position:absolute; top:110; left:0; width:500; z-index:10; padding:0px; font-size:50;"></div>
+<div id="emts1" style="position:absolute; top:25; left:0; width:500; z-index:10; padding:0px; font-size:12;"></div>
+<div id="emts2" style="position:absolute; top:425; left:0; width:500; z-index:10; padding:0px; font-size:12;"></div>
 </CENTER>
 </B></FONT>
 <script>
@@ -43,15 +43,15 @@ background-color: black;
 	document.body.appendChild(canvas); 
 
 	function init(){
-		setInterval(loop, 86); 
+		setInterval(loop, 86.4); 
 	}
 	function checkTime(i) {
     if (i < 10) {i = "0" + i}; 
     return i;}
 
 	function loop() {
-		canvas.width = 1000
-		canvas.height = 1000;
+		canvas.width = 500
+		canvas.height = 500;
 		
 		var now = new Date().getTime()/86400000 % 1;
 		var nowlocal = (new Date().getTime()-(new Date().getTimezoneOffset()*60000))/86400000 % 1;
@@ -66,7 +66,7 @@ background-color: black;
 		var dtime2b = now*4000 % 1 * 360;
 		
 		var y = new Date().getFullYear();
-		var n = checkTime(new Date().getMonth());
+		var n = checkTime(new Date().getMonth()+1);
 		var d = checkTime(new Date().getDate());
 		var wk = ["Su","Mo","Tu","We","Th","Fr","Sa"];
 		var w = wk[new Date().getDay()];
@@ -115,12 +115,12 @@ background-color: black;
 	WCT = Math.floor((Math.floor(utime / 86400) - 9131) / 400) + "ya " + Math.floor(((Math.floor(utime / 86400) - 9131) / 40) % 10) + "mio " + Math.floor((Math.floor(utime / 86400) - 9131) % 40) + "dn D " + (((utime / 86400) % 1) * 40 + 100).toString().substring(1, 3) + "." + ((((utime / 86400) % 1) * 40 * 100) % 100 + 100).toString().substring(1, 3) + "'" + ((((utime / 86400) % 1) * 40 * 100 * 100) % 100 + 100).toString().substring(1, 3) + '"' + ((((utime / 86400) % 1) * 40 * 100 * 100 * 100) % 100 + 100).toString().substring(1, 3) + " WCT";
 	SPT_WCT = SPT + "/" + WCT;
 	br = "<BR>"
-		document.getElementById('emts1').innerHTML = EliteDate+br+EMD_EC+br+ELSC_ELC_EDC+br+ELSC_ELC_EDC+br+ELSWC_ELWC_EWC
+		document.getElementById('emts1').innerHTML = EliteDate+br+EMD_EC+br+ELSC_ELC_EDC+br+ELSWC_ELWC_EWC
 		document.getElementById('emts2').innerHTML = SEDT_ELT+br+XD_XLD_XXD+br+XT_ECX_EXT+br+SPT_WCT;
 		document.getElementById('emtt').innerHTML = EMT;
 		document.getElementById('date').innerHTML = y+"."+n+"."+d+"-"+w;
 		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
-		document.getElementById('utctime').innerHTML = "<FONT SIZE=6>"+ud+"-"+uw+"</FONT>"+uh + ":" + um + "<FONT SIZE=7>:" + us +" UTC</FONT>";
+		document.getElementById('utctime').innerHTML = "<FONT SIZE=3>"+ud+"-"+uw+"</FONT>"+uh + ":" + um + "<FONT SIZE=4>:" + us +" UTC</FONT>";
 
 		context.clearRect(0,0,canvas.width, canvas.height);
 		drawRotatedImage(face,0,1);
